@@ -1,116 +1,93 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://repo.spongepowered.org/maven' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-    }
+plugins {
+    id "dev.architectury.loom" version "1.0-SNAPSHOT"
+    id "maven-publish"
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
 
-version = "${mod_version}"
-group = "${mod_group}"
-archivesBaseName = "${mod_name}-${mc_version}"
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-minecraft {
+loom {
+    silentMojangMappingsLicense()
 
-    mappings channel: 'official', version: '1.16.5'
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    runs {
-        client {
-            workingDirectory project.file('run')
-            arg "-mixin.config=bettergamemenu.mixins.json"
+    forge {
+        mixinConfigs = [
+                "examplemod.mixins.json"
+        ]
 
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                bettergamemenu {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            arg "-mixin.config=bettergamemenu.mixins.json"
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                bettergamemenu {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'bettergamemenu', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                bettergamemenu {
-                    source sourceSets.main
-                }
-            }
+        dataGen {
+            mod project.mod_id
         }
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+repositories {
+
+}
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.32'
-    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    //mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    mappings loom.officialMojangMappings()
+    forge "net.minecraftforge:forge:${project.forge_version}"
+}
 
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+
+    def targetVersion = 8
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.release = targetVersion
+    }
+}
+
+java {
+    withSourcesJar()
 }
 
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "${mod_name}",
-                "Specification-Vendor"    : "${mod_vendor}",
+                "Specification-Title"     : project.mod_id,
+                "Specification-Vendor"    : project.mod_author,
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "${mod_vendor}",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"            : "bettergamemenu.mixins.json"
+                "Implementation-Version"  : version,
+                "Implementation-Vendor"   : project.mod_author,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
-jar.finalizedBy('reobfJar')
-
-mixin {
-    add sourceSets.main, "bettergamemenu.refmap.json"
-}
+// configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact jar
+            // add all the jars that should be included when publishing to maven
+            artifact(remapJar) {
+                builtBy remapJar
+            }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
         }
     }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
     }
 }
