@@ -1,0 +1,29 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+license = "LGPLv3"
+
+[[mods]]
+modId = "examplemod"
+version = "${version}"
+displayName = "Example Mod"
+displayURL="https://changeme.dev/" #optional
+logoFile="icon.png" #optional
+credits="MORIMORI0317" #optional
+authors="TexTrue, TexTrueStudio, BocchiKessokuTeam"
+description = '''
+This mod makes the game menu even better.
+'''
+
+[[dependencies.examplemod]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.examplemod]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,)"
+ordering = "NONE"
+side = "BOTH"
