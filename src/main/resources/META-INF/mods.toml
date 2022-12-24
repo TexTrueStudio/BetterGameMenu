@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[37,)"
+loaderVersion = "[39,)"
 license = "LGPLv3"
 
 [[mods]]
@@ -17,20 +17,20 @@ Better Game Menu fork
 [[dependencies.bettergamemenu]]
 modId = "forge"
 mandatory = true
-versionRange = "[37,)"
+versionRange = "[39,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.bettergamemenu]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.17,)"
+versionRange = "[1.18,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.bettergamemenu]]
 modId = "cloth_config"
 mandatory = true
-versionRange = "[5,)"
+versionRange = "[6,)"
 ordering = "NONE"
 side = "BOTH"

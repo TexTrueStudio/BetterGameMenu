@@ -15,7 +15,7 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.storage.LevelStorageException;
 import net.minecraft.world.level.storage.LevelStorageSource;
-import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import org.thinkingstudio.bettergamemenu.BetterGameMenu;
 import org.thinkingstudio.bettergamemenu.utils.WorldUtils;
 
@@ -41,9 +41,9 @@ public class JoinLastWorld {
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat();
     private static boolean rejoindServer = false;
 
-    public static void onGui(GuiScreenEvent.InitGuiEvent.Post e) {
-        Button singlePlayer = extractionButton(e.getWidgetList(), "menu.singleplayer", 0);
-        Button multiPlayer = extractionButton(e.getWidgetList(), "menu.multiplayer", 1);
+    public static void onGui(ScreenEvent.InitScreenEvent.Post e) {
+        Button singlePlayer = extractionButton(e.getListenersList(), "menu.singleplayer", 0);
+        Button multiPlayer = extractionButton(e.getListenersList(), "menu.multiplayer", 1);
 
         if (singlePlayer != null) {
             LastSinglePlayData last = getLastSinglePlay();
@@ -65,12 +65,12 @@ public class JoinLastWorld {
                 component.append("\n").append(new TextComponent(last.id()).withStyle(ChatFormatting.GRAY));
                 component.append("\n").append(new TextComponent(DATE_FORMAT.format(new Date(last.lastPlayed))).withStyle(ChatFormatting.GRAY));
                 component.append("\n").append(last.gameType().getLongDisplayName().copy().withStyle(ChatFormatting.GRAY));
-                e.getGui().renderTooltip(poseStack, mc.font.split(component, Math.max(e.getGui().width / 2 - 43, 170)), x, y);
+                e.getScreen().renderTooltip(poseStack, mc.font.split(component, Math.max(e.getScreen().width / 2 - 43, 170)), x, y);
             }, new TranslatableComponent("button.bettergamemenu.lastjoinsingleplay"));
 
             lastB.active = lastB.visible = flg;
-            e.addWidget(lastB);
-            ((List<GuiEventListener>) e.getGui().children()).add(lastB);
+            e.addListener(lastB);
+            ((List<GuiEventListener>) e.getScreen().children()).add(lastB);
         }
 
         if (multiPlayer != null) {
@@ -79,7 +79,7 @@ public class JoinLastWorld {
                 if (last == null)
                     return;
                 rejoindServer = true;
-                WorldUtils.joinServer(e.getGui(), new ServerData(last.name(), last.ip(), last.lan()));
+                WorldUtils.joinServer(e.getScreen(), new ServerData(last.name(), last.ip(), last.lan()));
             }, (button, poseStack, x, y) -> {
                 TextComponent component = new TextComponent(last.name());
                 component.append("\n").append(new TextComponent(last.ip()).withStyle(ChatFormatting.GRAY));
@@ -87,12 +87,12 @@ public class JoinLastWorld {
                     component.append(new TextComponent(" (Lan)").withStyle(ChatFormatting.GRAY));
                 if (last.motd != null)
                     component.append("\n").append(last.motd);
-                e.getGui().renderTooltip(poseStack, mc.font.split(component, Math.max(e.getGui().width / 2 - 43, 170)), x, y);
+                e.getScreen().renderTooltip(poseStack, mc.font.split(component, Math.max(e.getScreen().width / 2 - 43, 170)), x, y);
             }, new TranslatableComponent("button.bettergamemenu.lastjoinmultiplay"));
 
             lastB.active = lastB.visible = last != null;
-            e.addWidget(lastB);
-            ((List<GuiEventListener>) e.getGui().children()).add(lastB);
+            e.addListener(lastB);
+            ((List<GuiEventListener>) e.getScreen().children()).add(lastB);
         }
     }
 

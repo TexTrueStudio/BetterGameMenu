@@ -16,8 +16,8 @@ import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.client.gui.ModListScreen;
 import net.minecraftforge.client.gui.NotificationModUpdateScreen;
-import net.minecraftforge.fmlclient.gui.screen.ModListScreen;
 import org.thinkingstudio.bettergamemenu.BGMConfig;
 import org.thinkingstudio.bettergamemenu.BetterGameMenu;
 import org.thinkingstudio.bettergamemenu.utils.WorldUtils;
@@ -36,7 +36,7 @@ public class BetterGameMenuScreen extends PauseScreen {
 
     private void createButtons() {
         this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 24 + -16, 204, 20, new TranslatableComponent("menu.returnToGame"), (p_96337_) -> {
-            this.minecraft.setScreen((Screen) null);
+            this.minecraft.setScreen(null);
             this.minecraft.mouseHandler.grabMouse();
         }));
         this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 48 + -16, 98, 20, new TranslatableComponent("gui.advancements"), (p_96335_) -> {
