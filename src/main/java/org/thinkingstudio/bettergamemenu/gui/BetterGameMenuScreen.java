@@ -15,15 +15,15 @@ import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.client.gui.TitleScreenModUpdateIndicator;
 import net.minecraftforge.client.gui.ModListScreen;
-import net.minecraftforge.client.gui.NotificationModUpdateScreen;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.thinkingstudio.bettergamemenu.BGMConfig;
 import org.thinkingstudio.bettergamemenu.BetterGameMenu;
 import org.thinkingstudio.bettergamemenu.utils.WorldUtils;
 
 public class BetterGameMenuScreen extends PauseScreen {
-    private NotificationModUpdateScreen modUpdateNotification;
+    private TitleScreenModUpdateIndicator modUpdateNotification;
 
     public BetterGameMenuScreen() {
         super(true);
@@ -33,21 +33,21 @@ public class BetterGameMenuScreen extends PauseScreen {
     protected void init() {
         createButtons();
     }
-
+    @SubscribeEvent
     private void createButtons() {
-        this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 24 + -16, 204, 20, new TranslatableComponent("menu.returnToGame"), (p_96337_) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 24 + -16, 204, 20, Component.translatable("menu.returnToGame"), (p_96337_) -> {
             this.minecraft.setScreen(null);
             this.minecraft.mouseHandler.grabMouse();
         }));
-        this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 48 + -16, 98, 20, new TranslatableComponent("gui.advancements"), (p_96335_) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 48 + -16, 98, 20, Component.translatable("gui.advancements"), (p_96335_) -> {
             this.minecraft.setScreen(new AdvancementsScreen(this.minecraft.player.connection.getAdvancements()));
         }));
-        this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 48 + -16, 98, 20, new TranslatableComponent("gui.stats"), (p_96333_) -> {
+        this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 48 + -16, 98, 20, Component.translatable("gui.stats"), (p_96333_) -> {
             this.minecraft.setScreen(new StatsScreen(this, this.minecraft.player.getStats()));
         }));
 
         String s = SharedConstants.getCurrentVersion().isStable() ? "https://aka.ms/javafeedback?ref=game" : "https://aka.ms/snapshotfeedback?ref=game";
-        Button gfButton = this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 72 + -16, 98, 20, new TranslatableComponent("menu.sendFeedback"), (p_96318_) -> {
+        Button gfButton = this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 72 + -16, 98, 20, Component.translatable("menu.sendFeedback"), (p_96318_) -> {
             this.minecraft.setScreen(new ConfirmLinkScreen((p_169337_) -> {
                 if (p_169337_) {
                     Util.getPlatform().openUri(s);
@@ -59,7 +59,7 @@ public class BetterGameMenuScreen extends PauseScreen {
 
         gfButton.active = gfButton.visible = !isRemoveGFARB();
 
-        Button rbButton = this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 72 + -16, 98, 20, new TranslatableComponent("menu.reportBugs"), (p_96331_) -> {
+        Button rbButton = this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 72 + -16, 98, 20, Component.translatable("menu.reportBugs"), (p_96331_) -> {
             this.minecraft.setScreen(new ConfirmLinkScreen((p_169339_) -> {
                 if (p_169339_) {
                     Util.getPlatform().openUri("https://aka.ms/snapshotbugs?ref=game");
@@ -70,10 +70,10 @@ public class BetterGameMenuScreen extends PauseScreen {
         }));
         rbButton.active = rbButton.visible = !isRemoveGFARB();
 
-        Button options = this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 96 + -16, 98, 20, new TranslatableComponent("menu.options"), (p_96323_) -> {
+        Button options = this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 96 + -16, 98, 20, Component.translatable("menu.options"), (p_96323_) -> {
             this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options));
         }));
-        Button shareToLan = this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 96 + -16, 98, 20, new TranslatableComponent("menu.shareToLan"), (p_96321_) -> {
+        Button shareToLan = this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 96 + -16, 98, 20, Component.translatable("menu.shareToLan"), (p_96321_) -> {
             this.minecraft.setScreen(new ShareToLanScreen(this));
         }));
 
@@ -82,14 +82,14 @@ public class BetterGameMenuScreen extends PauseScreen {
         else
             shareToLan.active = isNonOpenLan();
 
-        Component component = this.minecraft.isLocalServer() ? new TranslatableComponent("menu.returnToMenu") : new TranslatableComponent("menu.disconnect");
+        Component component = this.minecraft.isLocalServer() ? Component.translatable("menu.returnToMenu") : Component.translatable("menu.disconnect");
         Button retunToMenu = this.addRenderableWidget(new Button(this.width / 2 - 102, this.height / 4 + 120 + -16, 204, 20, component, (p_96315_) -> {
             boolean flag = this.minecraft.isLocalServer();
             boolean flag1 = this.minecraft.isConnectedToRealms();
             p_96315_.active = false;
             this.minecraft.level.disconnect();
             if (flag) {
-                this.minecraft.clearLevel(new GenericDirtMessageScreen(new TranslatableComponent("menu.savingLevel")));
+                this.minecraft.clearLevel(new GenericDirtMessageScreen(Component.translatable("menu.savingLevel")));
             } else {
                 this.minecraft.clearLevel();
             }
@@ -107,10 +107,10 @@ public class BetterGameMenuScreen extends PauseScreen {
 
         boolean isDownButtonFlg = isHideUnnecessaryShareToLan() ? !isRemoveGFARB() && isHideUnnecessaryShareToLan() && isNonOpenLan() : !isRemoveGFARB();
 
-        Button modButton = this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + (isDownButtonFlg ? 120 : 96) - 16, 98, 20, new TranslatableComponent("menu.bettergamemenu.modoption"), (n) -> Minecraft.getInstance().setScreen(new ModListScreen(this))));
+        Button modButton = this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + (isDownButtonFlg ? 120 : 96) - 16, 98, 20, Component.translatable("menu.bettergamemenu.modoption"), (n) -> Minecraft.getInstance().setScreen(new ModListScreen(this))));
         modButton.active = modButton.visible = isModOptions();
 
-
+/*
         Button rejoinButton = this.addRenderableWidget(new ImageButton(retunToMenu.x + retunToMenu.getWidth() + 8, retunToMenu.y, 20, 20, this.minecraft.isLocalServer() ? 0 : 20, 0, 20, BetterGameMenu.WIDGETS, 256, 256, n -> {
             String id = "";
             ServerData serverData = null;
@@ -124,7 +124,7 @@ public class BetterGameMenuScreen extends PauseScreen {
             n.active = false;
             this.minecraft.level.disconnect();
             if (bl) {
-                this.minecraft.clearLevel(new GenericDirtMessageScreen(new TranslatableComponent("menu.savingLevel")));
+                this.minecraft.clearLevel(new GenericDirtMessageScreen(Component.translatable("menu.savingLevel")));
             } else {
                 this.minecraft.clearLevel();
             }
@@ -146,9 +146,11 @@ public class BetterGameMenuScreen extends PauseScreen {
                 }
             }
         }, (button, poseStack, x, y) -> {
-            this.renderTooltip(poseStack, this.minecraft.font.split(new TranslatableComponent("button.bettergamemenu.rejoin"), Math.max(this.width / 2 - 43, 170)), x, y);
-        }, new TranslatableComponent("button.bettergamemenu.rejoin")));
+            this.renderTooltip(poseStack, this.minecraft.font.split(Component.translatable("button.bettergamemenu.rejoin"), Math.max(this.width / 2 - 43, 170)), x, y);
+        }, Component.translatable("button.bettergamemenu.rejoin")));
         rejoinButton.active = rejoinButton.visible = isRejoinButton();
+
+ */
 
         if (isModOptions()) {
             if (isShowUpdate())
@@ -159,7 +161,7 @@ public class BetterGameMenuScreen extends PauseScreen {
                 shareToLan.y -= 24;
             if (isDownButtonFlg) {
                 options.y += 24;
-                rejoinButton.y += 24;
+                //rejoinButton.y += 24;
                 retunToMenu.y += 24;
                 for (Widget widget : this.renderables) {
                     if (widget instanceof AbstractWidget)
@@ -172,8 +174,8 @@ public class BetterGameMenuScreen extends PauseScreen {
         }
     }
 
-    private NotificationModUpdateScreen initModUpdate(Button modButton) {
-        NotificationModUpdateScreen notificationModUpdateScreen = new NotificationModUpdateScreen(modButton);
+    private TitleScreenModUpdateIndicator initModUpdate(Button modButton) {
+        TitleScreenModUpdateIndicator notificationModUpdateScreen = new TitleScreenModUpdateIndicator(modButton);
         notificationModUpdateScreen.resize(this.getMinecraft(), this.width, this.height);
         notificationModUpdateScreen.init();
         return notificationModUpdateScreen;
@@ -206,7 +208,7 @@ public class BetterGameMenuScreen extends PauseScreen {
         return this.minecraft.hasSingleplayerServer() && !this.minecraft.getSingleplayerServer().isPublished();
     }
 
-    private boolean isRejoinButton() {
-        return BGMConfig.enableRejoinButton;
-    }
+    //private boolean isRejoinButton() {
+    //    return BGMConfig.enableRejoinButton;
+    //}
 }

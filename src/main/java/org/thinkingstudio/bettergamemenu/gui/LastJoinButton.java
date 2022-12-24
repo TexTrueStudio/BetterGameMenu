@@ -1,5 +1,5 @@
 package org.thinkingstudio.bettergamemenu.gui;
-
+/*
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.network.chat.Component;
@@ -25,3 +25,4 @@ public class LastJoinButton extends ImageButton {
             RenderUtils.drawTexture(RenderUtils.getNativeTextureOnly(id, data), poseStack, x + 1, y + 1, 0, 0, 18, 18, 18, 18);
     }
 }
+ */

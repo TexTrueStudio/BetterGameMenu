@@ -1,5 +1,5 @@
 package org.thinkingstudio.bettergamemenu.gui;
-
+/*
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -220,3 +220,4 @@ public class JoinLastWorld {
     public static record LastMultiPlayData(String ip, String name, Component motd, byte[] icon, boolean lan) {
     }
 }
+ */
