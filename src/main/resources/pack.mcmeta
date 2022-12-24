@@ -1,7 +1,6 @@
 {
-    "pack": {
-        "description": "The BetterGameMenu Resources",
-        "pack_format": 6,
-        "_comment": "A BetterGameMenu pack."
-    }
+  "pack": {
+    "description": "Resources for BetterGameMenu",
+    "pack_format": 7
+  }
 }

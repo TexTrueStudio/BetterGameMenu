@@ -1,14 +1,29 @@
 modLoader = "javafml"
 loaderVersion = "[37,)"
-license = "LGPL v3"
+license = "LGPLv3"
+
 [[mods]]
 modId = "bettergamemenu"
-version = "${file.jarVersion}"
-displayName = "Better Game Menu"
-displayURL = "https://www.curseforge.com/minecraft/mc-mods/better-game-menu"
-logoFile = "logo.png"
-authors = "MORIMORI0317"
+version = "${version}"
+displayName = "BetterGameMenu-Reset"
+displayURL="https://changeme.dev/" #optional
+logoFile="logo.png" #optional
+credits="MORIMORI0317" #optional
+authors="TexTrue, TexTrueStudio, BocchiKessokuTeam" #optional
 description = '''
-This mod makes the game menu even better
-Very Ikisugi Game Menu!
+Better Game Menu fork
 '''
+
+[[dependencies.bettergamemenu]]
+modId = "forge"
+mandatory = true
+versionRange = "[37,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.bettergamemenu]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.17,)"
+ordering = "NONE"
+side = "BOTH"

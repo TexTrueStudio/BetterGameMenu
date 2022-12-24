@@ -1,3 +1,6 @@
 {
-  "menu.modoption": "Opzioni Mod..."
+  "menu.bettergamemenu.modoption": "Opzioni Mod...",
+  "button.bettergamemenu.rejoin": "Re join",
+  "button.bettergamemenu.lastjoinsingleplay": "Last Join Single Play",
+  "button.bettergamemenu.lastjoinmultiplay": "Last Join Multi Play"
 }

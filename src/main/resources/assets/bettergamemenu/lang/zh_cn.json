@@ -1,3 +1,6 @@
 {
-  "menu.modoption": "Mod设置..."
+  "menu.bettergamemenu.modoption": "Mod设置...",
+  "button.bettergamemenu.rejoin": "重新加入",
+  "button.bettergamemenu.lastjoinsingleplay": "最后进入的单人世界",
+  "button.bettergamemenu.lastjoinmultiplay": "最后进入的多人世界"
 }

@@ -1,6 +1,6 @@
 {
-  "menu.modoption": "Mod 設定...",
-  "gui.button.rejoin": "再参加",
-  "narrator.button.lastjoinsingleplay": "最後のシングルプレイに参加",
-  "narrator.button.lastjoinmultiplay": "最後のマルチプレイに参加"
+  "menu.bettergamemenu.modoption": "Mod 設定...",
+  "button.bettergamemenu.rejoin": "再参加",
+  "button.bettergamemenu.lastjoinsingleplay": "最後のシングルプレイに参加",
+  "button.bettergamemenu.lastjoinmultiplay": "最後のマルチプレイに参加"
 }

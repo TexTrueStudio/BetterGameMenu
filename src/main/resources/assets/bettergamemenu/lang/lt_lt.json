@@ -1,3 +1,6 @@
 {
-  "menu.modoption": "Modifikacijų nustatymai..."
+  "menu.bettergamemenu.modoption": "Modifikacijų nustatymai...",
+  "button.bettergamemenu.rejoin": "Re join",
+  "button.bettergamemenu.lastjoinsingleplay": "Last Join Single Play",
+  "button.bettergamemenu.lastjoinmultiplay": "Last Join Multi Play"
 }
